@@ -1,0 +1,9 @@
+mongodump --host 'sourceRS/source-host1:27017,source-host2:27017,source-host3:27017' \
+  --archive --ssl \
+  -username 'mySourceUser' -password 'sourcePassword' --authenticationDatabase admin \
+| \
+
+  mongorestore --host cluster0/cluster0-shard-00-00-schzf.mongodb.net:27017 \
+    --archive --ssl \
+    -username sandbox -password 'SandboxAccess#213NoW' --authenticationDatabase admin \
+    --nsExclude 'admin.system.*'
