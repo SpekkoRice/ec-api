@@ -1,9 +1,30 @@
-{% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href="/api/{{ question.id }}/">{{ question.question_text }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
+
+<h1>See the current weather!! <small>(yaay)</small></h1>
+
+<form>
+  {% csrf_token %}
+  <input type="text" placeholder="Enter ZIP / Postal Code" name="postalCode">
+  <br />
+  <br />
+  <button type="submit">Get Weather Details!</button>
+</form>
+
+<h2>Results for: </h2>
+<table>
+  <tr>
+    <td>City Name:</td>
+    <td>Degrees (C):</td>
+    <td>Wind Speed (km/ph):</td>
+    <td>Wind Direction:</td>
+    <td>Visibility (meters):</td>
+  </tr>
+  <tr>
+    <td>{{ weather.cityName }}</td>
+    <td>{{ weather.degrees }}</td>
+    <td>{{ weather.windSpeed }}</td>
+    <td>{{ weather.windDirection }}</td>
+    <td>{{ weather.visibility }}</td>
+  </tr>
+</table>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}

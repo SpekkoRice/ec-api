@@ -1,22 +1,20 @@
 # Create your views here.
-from django.http import HttpResponse, HttpResponseRedirect
-from django.http import Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
-from .models import Question
-from .models import Choice
 from django.template import loader
 from django.urls import reverse
+from .weather import WeatherApi
 
+from .models import Question, Choice
 
 def index(request):
-  latest_question_list = Question.objects.order_by('-pub_date')[:5]
-  template = loader.get_template('index.html')
-  # return render(request, 'polls/index.html', context)
-  context = {
-      'latest_question_list': latest_question_list,
-  }
-  return HttpResponse(template.render(context, request))
+  weatherApi = WeatherApi(
+    'https://api.openweathermap.org/data/2.5/weather',
+    '44353e2bc29c022d20a1b3cdccdc41fc'
+  )
+  weather = weatherApi.getWeatherDetails(request.GET['postalCode'])
+  # print(dir(weather))
+  return render(request, 'index.html', {'weather': weather})
 
 def detail(request, question_id):
   question = get_object_or_404(Question, pk=question_id)
